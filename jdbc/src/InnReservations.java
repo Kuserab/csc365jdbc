@@ -1,10 +1,10 @@
 import java.sql.*;
 
-public class InnDatabase
+public class InnReservations
 {
    public static void main (String[] args)
    {
-      InnDatabase db = new InnDatabase();
+      InnReservations db = new InnReservations();
       db.run();
    }
 
@@ -16,9 +16,7 @@ public class InnDatabase
                  System.getenv("APP_JDBC_USER"),
                  System.getenv("APP_JDBC_PW"));
          System.out.println("Connection established");
-         Statement stmt = conn.createStatement();
-         System.out.println("Statement formed");
-         runSqlQueries(stmt);
+         runSqlQueries(conn);
          conn.close();
       } catch (SQLException e) {
          System.out.println("Unable to complete sql request: " + e.getMessage());
@@ -26,22 +24,38 @@ public class InnDatabase
       }
    }
 
-   // Sample query: 'select * from Rooms
-   private void runSqlQueries(Statement stmt)
+   private void runSqlQueries(Connection conn)
+   {
+      sampleQuery(conn);
+      // run RoomsAndDates FR1
+
+      // run Reservations FR2
+
+      // run ReservationChange FR3
+
+      // run ReservationCancellation FR4
+
+      // run ReservationDetails FR5
+
+      // run Revenue FR6
+   }
+
+   private void sampleQuery(Connection conn)
    {
       try {
-         ResultSet rs = stmt.executeQuery("select * from Rooms");
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery("select * from lab7_rooms");
          while (rs.next()) {
-            String id = rs.getString("RoomId");
+            String code = rs.getString("RoomCode");
             String name = rs.getString ("RoomName");
             int beds = rs.getInt("Beds");
             String bedtype = rs.getString("BedType");
-            String maxoccupancy = rs.getString("MaxOccupancy");
+            String maxoccupancy = rs.getString("MaxOcc");
             float baseprice = rs.getFloat("BasePrice");
             String decor = rs.getString("Decor");
 
             System.out.format("%s, %s, %d, %s, %s, %f, %s\n",
-                    id, name, beds, bedtype, maxoccupancy, baseprice, decor);
+                    code, name, beds, bedtype, maxoccupancy, baseprice, decor);
          }
       } catch (SQLException e) {
          System.out.println("Unable to complete sql request: " + e.getMessage());
