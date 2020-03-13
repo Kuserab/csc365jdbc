@@ -28,42 +28,50 @@ public class InnReservations
 
    private void runSqlQueries(Connection conn)
    {
-      sampleQuery(conn);
-      // run RoomsAndDates FR1
-
-      // run Reservations FR2
-
-      // run ReservationChange FR3
-
-      // run ReservationCancellation FR4
-
-      // run ReservationDetails FR5
-      fr5(conn);
-      // run Revenue FR6
-
+      String input = "";
+      Scanner scanner = new Scanner(System.in);
+      while (!input.startsWith("q"))
+      {
+         System.out.print ("Enter a query to run [FR<n> | q]: ");
+         input = scanner.nextLine();
+         switch (input.toUpperCase()) {
+            case "FR1":
+               fr1(conn);
+               break;
+            case "FR2":
+               fr2(conn);
+               break;
+            case "FR3":
+               fr3(conn);
+               break;
+            case "FR4":
+               fr4(conn);
+               break;
+            case "FR5":
+               fr5(conn);
+               break;
+            case "FR6":
+               fr6(conn);
+               break;
+         }
+      }
+      System.out.println("Goodbye");
    }
 
-   private void sampleQuery(Connection conn)
-   {
-      try {
-         Statement stmt = conn.createStatement();
-         ResultSet rs = stmt.executeQuery("select * from lab7_rooms");
-         while (rs.next()) {
-            String code = rs.getString("RoomCode");
-            String name = rs.getString ("RoomName");
-            int beds = rs.getInt("Beds");
-            String bedtype = rs.getString("BedType");
-            String maxoccupancy = rs.getString("MaxOcc");
-            float baseprice = rs.getFloat("BasePrice");
-            String decor = rs.getString("Decor");
+   private void fr1(Connection conn) {
+      System.out.println("== Weclome to FR1 ==");
+   }
 
-            System.out.format("%s, %s, %d, %s, %s, %f, %s\n",
-                    code, name, beds, bedtype, maxoccupancy, baseprice, decor);
-         }
-      } catch (SQLException e) {
-         System.out.println("Unable to complete sql request: " + e.getMessage());
-         System.exit(1);
-      }
+   private void fr2(Connection conn) {
+      System.out.println("== Welcome to FR2 ==");
+   }
+
+   private void fr3(Connection conn) {
+      System.out.println("== Welcome to FR3 ==");
+   }
+
+   private void fr4(Connection conn) {
+      System.out.println("== Welcome to FR4 ==");
    }
 
    private void fr5(Connection conn) {
@@ -139,5 +147,9 @@ public class InnReservations
          System.out.println("Unable to complete sql request: " + e.getMessage());
          System.exit(1);
       }
+   }
+
+   private void fr6(Connection conn) {
+      System.out.println("-- Welcome to FR6 --");
    }
 }
