@@ -8,4 +8,5 @@ read -p 'EMPLID: ' passvar
 export APP_JDBC_USER=$uservar
 export APP_JDBC_PW=WinterTwenty20_365_$passvar
 
-javac InnReservations.java
+javac jdbc/src/InnReservations.java
+java jdbc/src/InnReservations
