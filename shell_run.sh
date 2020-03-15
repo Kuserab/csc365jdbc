@@ -9,4 +9,4 @@ export APP_JDBC_USER=$uservar
 export APP_JDBC_PW=WinterTwenty20_365_$passvar
 
 javac jdbc/src/InnReservations.java
-java jdbc/src/InnReservations
+java -classpath jdbc/src/ InnReservations
