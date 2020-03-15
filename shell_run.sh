@@ -9,4 +9,6 @@ export APP_JDBC_USER=$uservar
 export APP_JDBC_PW=WinterTwenty20_365_$passvar
 
 javac jdbc/src/InnReservations.java
-java -classpath jdbc/src/ InnReservations
+cd jdbc/src
+java -cp mysql-connector-java-8.0.16.jar:. InnReservations
+cd -
