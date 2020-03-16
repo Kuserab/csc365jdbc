@@ -2,6 +2,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.time.temporal.ChronoUnit;
+import java.time.DayOfWeek;
 
 public class InnReservations
 {
@@ -131,6 +133,7 @@ public class InnReservations
          pstmt.setInt(i++, numAdults);
          pstmt.setInt(i++, numKids);
 
+         /* shows available rooms after query */
          ResultSet rs = pstmt.executeQuery();
          System.out.println("\nAvailable Rooms: ");
          ArrayList<Room> options = new ArrayList<Room>();
@@ -147,7 +150,9 @@ public class InnReservations
             options.add(roomRow);
             System.out.format("%d. %s\n",++i,roomRow.getRoomCode());
          }
-         System.out.print("Select a room number (or select 0 to return: ");
+
+         /* give user option to choose */
+         System.out.print("Select a room number (or select 0 to return): ");
          int option = scanner.nextInt();
          while (option>=options.size())
          {
@@ -156,19 +161,49 @@ public class InnReservations
             option=scanner.nextInt();
          }
          
+
          if(option==0)
-            return;
+            return; /* user decided not to choose from rooms, returns to main menu */
          else
          {
-            System.out.println("Confirmation of reservation request: ");
+            /* finds the number of weekdays and weekends between dates of stay */
+            long days = ChronoUnit.DAYS.between(checkIn,checkOut);
+            LocalDate temp = checkIn;
+            int weekdays = 0;
+            int weekends = 0;
+            for(int j =0; j<=days; j++)
+            {
+               DayOfWeek day = temp.getDayOfWeek();
+               if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY)
+                  weekends++;
+               else
+                  weekdays++;
+               temp = temp.plusDays(1);
+            }
+
+            /* calculate cost of stay */
+            double weekdayRate = weekdays * options.get(option).getBasePrice();
+            double weekendRate = weekends * 1.1 * options.get(option).getBasePrice();
+            double tax = 0.18 * (weekdayRate + weekendRate) ;
+            double total = weekdayRate + weekendRate + tax;
+
+            /* shows confirmation info  */
+            System.out.println("\nConfirmation of reservation request: ");
             System.out.format("First name: %s\nLast name: %s\n" 
                + "Room code: %s\nRoom name: %s\nBed type: %s\n"
                + "Number of adults: %d\nNumber of children: %d\n"
+               + "Calculated cost of stay:\n"
+               + "  Weekday rate: %.2f\n"
+               + "  Weekend rate: %.2f\n"
+               + "  Tax:          %.2f\n"
+               + "  TOTAL:        %.2f\n"
                , firstName,lastName
-               , options.get(i).getRoomCode()
-               , options.get(i).getRoomName()
-               , options.get(i).getBedType()
-               , numAdults, numKids);
+               , options.get(option).getRoomCode()
+               , options.get(option).getRoomName()
+               , options.get(option).getBedType()
+               , numAdults, numKids
+               , weekdayRate, weekendRate, tax, total);
+
          }
       }
    
