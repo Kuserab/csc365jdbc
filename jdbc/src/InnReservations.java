@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class InnReservations
 {
@@ -55,15 +56,127 @@ public class InnReservations
                break;
          }
       }
+      scanner.close();
       System.out.println("Goodbye");
    }
 
    private void fr1(Connection conn) {
-      System.out.println("== Weclome to FR1 ==");
+      System.out.println("== Welcome to FR1 ==");
    }
 
+   private String checkStringLen(Scanner scanner, String printMsg)
+   {
+      String res = scanner.nextLine();
+   
+      while (res.length()<=0)
+      {
+         System.out.println("Input is required. Please try again.");
+         System.out.print(printMsg);
+         res=scanner.nextLine();
+      }
+   
+      return res;
+   }
    private void fr2(Connection conn) {
-      System.out.println("== Welcome to FR2 ==");
+      try {
+         System.out.println("== Welcome to FR2 ==");   
+         Scanner scanner = new Scanner(System.in);
+         System.out.print("First name: ");
+         String firstName = checkStringLen(scanner,"First name: ");
+         System.out.print("Last name: ");
+         String lastName  = checkStringLen(scanner,"Last name: ");
+         System.out.print("Room Code: ");
+         String room = scanner.nextLine();
+         System.out.print("Bed type: ");
+         String bed = scanner.nextLine();
+         System.out.print("Checkin: ");
+         String checkInString = checkStringLen(scanner,"Checkin: ");
+         System.out.print("Checkout: ");
+         String checkOutString = checkStringLen(scanner,"Checkout: ");
+         System.out.print("Number of children: ");
+         int numKids = scanner.nextInt();
+         System.out.print("Number of adults: ");
+         int numAdults = scanner.nextInt();
+
+         /* Trim user input */
+         firstName = firstName.trim();
+         lastName = lastName.trim();
+         bed = ((bed.trim().length() <= 0 || bed.toUpperCase().equals("ANY")) ? "%" : bed);
+         room = ((room.trim().length() <= 0 || room.toUpperCase().equals("ANY")) ? "%" : room);
+         String bedPref = ((bed.equals("%")) ? "" : " AND bedType = ?"); 
+         String roomPref = ((room.equals("%")) ? "" : " AND RoomCode = ? ");
+         
+         /* Queries for rooms that are available according to customer's input */
+         PreparedStatement pstmt = conn.prepareStatement
+         (
+            "WITH notAvail AS (select * from egarc113.lab7_reservations "
+                    + "inner join egarc113.lab7_rooms on Room like RoomCode "
+                    + "AND ((? BETWEEN CheckIn  and Checkout) OR (? BETWEEN CheckIn and CheckOut))) "
+                    
+            + "SELECT * from egarc113.lab7_rooms WHERE (RoomCode, bedType) not in (SELECT RoomCode, bedType FROM notAvail)"
+            + bedPref + roomPref 
+            + "AND maxOcc>=(? + ?);"   
+         );
+   
+         int i = 1;
+         LocalDate checkIn = LocalDate.parse(checkInString);
+         pstmt.setDate(i++, java.sql.Date.valueOf(checkIn));
+         LocalDate checkOut = LocalDate.parse(checkOutString);
+         pstmt.setDate(i++, java.sql.Date.valueOf(checkOut));
+
+         if (!bed.equals("%"))
+            pstmt.setString(i++, bed);
+         if (!room.equals("%"))
+            pstmt.setString(i++, room);
+         pstmt.setInt(i++, numAdults);
+         pstmt.setInt(i++, numKids);
+
+         ResultSet rs = pstmt.executeQuery();
+         System.out.println("\nAvailable Rooms: ");
+         ArrayList<Room> options = new ArrayList<Room>();
+         options.add(new Room("empty","empty",0,"empty",0,0,"empty"));
+         i = 0;
+         while (rs.next()) {
+            Room roomRow = new Room(rs.getString("RoomCode"),
+               rs.getString("RoomName"),
+               rs.getInt("Beds"),
+               rs.getString("bedType"),
+               rs.getInt("maxOcc"),
+               rs.getDouble("basePrice"),
+               rs.getString("decor"));
+            options.add(roomRow);
+            System.out.format("%d. %s\n",++i,roomRow.getRoomCode());
+         }
+         System.out.print("Select a room number (or select 0 to return: ");
+         int option = scanner.nextInt();
+         while (option>=options.size())
+         {
+            System.out.println("Invalid option. Please try again.");
+            System.out.print("Select a room number (or select 0 to return): ");
+            option=scanner.nextInt();
+         }
+         
+         if(option==0)
+            return;
+         else
+         {
+            System.out.println("Confirmation of reservation request: ");
+            System.out.format("First name: %s\nLast name: %s\n" 
+               + "Room code: %s\nRoom name: %s\nBed type: %s\n"
+               + "Number of adults: %d\nNumber of children: %d\n"
+               , firstName,lastName
+               , options.get(i).getRoomCode()
+               , options.get(i).getRoomName()
+               , options.get(i).getBedType()
+               , numAdults, numKids);
+         }
+      }
+   
+      catch (SQLException e) 
+      {
+         System.out.println("Unable to complete sql request: " + e.getMessage());
+         System.exit(1);
+      }
    }
 
    private void fr3(Connection conn) {
