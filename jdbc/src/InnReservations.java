@@ -181,6 +181,81 @@ public class InnReservations
 
    private void fr3(Connection conn) {
       System.out.println("== Welcome to FR3 ==");
+      Scanner scanner = new Scanner(System.in);
+      System.out.print("Enter a reservation code: ");
+
+      try {
+         int code = Integer.parseInt(scanner.nextLine().trim());
+         PreparedStatement pstmt = conn.prepareStatement(
+                 "SELECT * from egarc113.lab7_reservations WHERE CODE = ?"
+         );
+         pstmt.setInt(1, code);
+         ResultSet rs = pstmt.executeQuery();
+         String input;
+
+         if (!rs.isBeforeFirst()) {
+            System.out.println("No reservation with given code found");
+            pstmt.close();
+            return;
+         }
+         Reservation res = new Reservation(rs);
+         System.out.println("Enter updated information or indicate 'No change'");
+         System.out.print("First name: "); // CONRAD SELBIG, 1 adult 0 children
+         if (!(input = scanner.nextLine()).equalsIgnoreCase("no change")) {
+            res.setFirstname(input);
+         }
+         System.out.print("Last name: ");
+         if (!(input = scanner.nextLine()).equalsIgnoreCase("no change")) {
+            res.setLastname(input);
+         }
+         System.out.print("Checkin: ");
+         if (!(input = scanner.nextLine()).equalsIgnoreCase( "no change")) {
+            res.setCheckin(Date.valueOf(input));
+         }
+         System.out.print("Checkout: ");
+         if (!(input = scanner.nextLine()).equalsIgnoreCase("no change")){
+            res.setCheckout(Date.valueOf(input));
+         }
+         System.out.print("# of children: ");
+         if (! (input = scanner.nextLine()).equalsIgnoreCase("no change")) {
+            res.setKids(Integer.parseInt(input));
+         }
+         System.out.print("# of adults: ");
+         if (! (input = scanner.nextLine()).equalsIgnoreCase("no change")) {
+            res.setAdults(Integer.parseInt(input));
+         }
+
+         if (res.isValidTimeSlot(conn)) {
+            pstmt = conn.prepareStatement(
+                    "UPDATE lab7_reservations " +
+                            "SET FirstName = ?, LastName = ?, CheckIn = ?, CheckOut = ?, Kids = ?, Adults = ? " +
+                            "WHERE Code = ?"
+            );
+            pstmt.setString(1, res.getFirstname());
+            pstmt.setString(2, res.getLastname());
+            pstmt.setDate(3, res.getCheckin());
+            pstmt.setDate(4, res.getCheckout());
+            pstmt.setInt(5, res.getKids());
+            pstmt.setInt(6, res.getAdults());
+            pstmt.setInt(7, res.getCode());
+            pstmt.execute();
+            pstmt.close();
+            System.out.println("Reservation details have been updated!");
+            System.out.println(res);
+         }
+         else {
+            pstmt.close();
+            System.out.println("Could not complete request: new reservation time conflicts with another");
+         }
+
+      } catch (SQLException e) {
+         System.out.println("Unable to complete sql request: " + e.getMessage());
+         System.exit(1);
+      } catch (NumberFormatException e) {
+         System.out.println("Input must be numerical");
+      } catch (IllegalArgumentException e) {
+         System.out.println("Invalid date");
+      }
    }
 
    private void fr4(Connection conn) {
