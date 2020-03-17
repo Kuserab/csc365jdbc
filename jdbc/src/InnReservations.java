@@ -79,6 +79,19 @@ public class InnReservations
    
       return res;
    }
+
+   private int checkInt(Scanner scanner)
+   {
+      int result = 0;
+      try {
+         result = Integer.parseInt(scanner.nextLine());
+      } catch (NumberFormatException e) {
+         e.printStackTrace();
+      }
+      return result;
+
+   }
+
    private void fr2(Connection conn) {
       try {
          System.out.println("== Welcome to FR2 ==");   
@@ -96,9 +109,9 @@ public class InnReservations
          System.out.print("Checkout: ");
          String checkOutString = checkStringLen(scanner,"Checkout: ");
          System.out.print("Number of children: ");
-         int numKids = scanner.nextInt();
+         int numKids = checkInt(scanner);
          System.out.print("Number of adults: ");
-         int numAdults = scanner.nextInt();
+         int numAdults = checkInt(scanner);
 
          /* Trim user input */
          firstName = firstName.trim();
@@ -135,7 +148,7 @@ public class InnReservations
 
          /* shows available rooms after query */
          ResultSet rs = pstmt.executeQuery();
-         System.out.println("\nAvailable Rooms: ");
+         System.out.println("\nChecking available rooms... ");
          ArrayList<Room> options = new ArrayList<Room>();
          options.add(new Room("empty","empty",0,"empty",0,0,"empty"));
          i = 0;
@@ -151,17 +164,25 @@ public class InnReservations
             System.out.format("%d. %s\n",++i,roomRow.getRoomCode());
          }
 
+         if (options.size() < 2)
+            AltRooms.possiblities(conn, options, checkIn, checkOut, room, bed
+            , (numKids+numAdults));
+
+         if (options.size() < 2){
+            System.out.println("No other room found due to exceeding max occupancy");
+            return;
+         }
+
          /* give user option to choose */
          System.out.print("Select a room number (or select 0 to return): ");
-         int option = scanner.nextInt();
+         int option = checkInt(scanner);
          while (option>=options.size())
          {
             System.out.println("Invalid option. Please try again.");
             System.out.print("Select a room number (or select 0 to return): ");
-            option=scanner.nextInt();
+            option = checkInt(scanner);
          }
          
-
          if(option==0)
             return; /* user decided not to choose from rooms, returns to main menu */
          else
@@ -203,12 +224,58 @@ public class InnReservations
                , options.get(option).getBedType()
                , numAdults, numKids
                , weekdayRate, weekendRate, tax, total);
+            
+            System.out.print("Confirm reservation? (YES or NO) : ");
+            String confirm = scanner.nextLine();
+            
+            /* if confirmed, create entry in table */
+            if (confirm.toUpperCase().equals("YES"))
+            {
+               /* finds max reservation code, increment */
+               PreparedStatement pstmtMax = conn.prepareStatement (
+                  "SELECT MAX(CODE) as max from egarc113.lab7_reservations;"
+               );
 
+               ResultSet rs2 = pstmtMax.executeQuery();
+               int maxResCode=0;
+               while (rs2.next()) {
+                  maxResCode = rs2.getInt("max") + 1;
+               }
+
+               /* insert entry into reservations table */
+               String ins = "INSERT INTO egarc113.lab7_reservations" 
+               + " (CODE, Room, CheckIn, Checkout, Rate, LastName, FirstName, Adults, Kids)"
+               + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+              
+               i=1;
+               try (PreparedStatement pstmtIns = conn.prepareStatement (ins)) {
+                  pstmtIns.setInt(i++,maxResCode);
+                  pstmtIns.setString(i++, options.get(option).getRoomCode());
+                  pstmtIns.setDate(i++, java.sql.Date.valueOf(checkIn));
+                  pstmtIns.setDate(i++, java.sql.Date.valueOf(checkOut));
+                  pstmtIns.setDouble(i++, total);
+                  pstmtIns.setString(i++, lastName);
+                  pstmtIns.setString(i++, firstName);
+                  pstmtIns.setInt(i++, numAdults);
+                  pstmtIns.setInt(i++, numKids);
+                  int rowCount = pstmtIns.executeUpdate();
+                  System.out.println("Reservation reserved!\nReturning to the main menu..");
+               }
+               catch (SQLException e) {
+                  System.out.println("Unable to complete sql insert: " + e.getMessage());
+                  System.exit(1);
+               }
+            }
+            else if(confirm.toUpperCase().equals("NO")) {
+               System.out.println("Reservation request cancelled. Returning to the main menu..");
+            }
+            else {
+               System.out.println("Not a valid input. Reservation request cancelled."
+                  + " Returning to the main menu..");
+            }
          }
       }
-   
-      catch (SQLException e) 
-      {
+      catch (SQLException e) {
          System.out.println("Unable to complete sql request: " + e.getMessage());
          System.exit(1);
       }
