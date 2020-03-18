@@ -362,6 +362,39 @@ public class InnReservations
 
    private void fr4(Connection conn) {
       System.out.println("== Welcome to FR4 ==");
+      Scanner scanner = new Scanner(System.in);
+      System.out.print("Enter a reservation code: ");
+
+      try {
+         int code = Integer.parseInt(scanner.nextLine().trim());
+         PreparedStatement pstmt = conn.prepareStatement(
+                 "SELECT * from lab7_reservations WHERE CODE = ?"
+         );
+         pstmt.setInt(1, code);
+         ResultSet rs = pstmt.executeQuery();
+
+         if (!rs.isBeforeFirst()) {
+            System.out.println("No reservation with given code found");
+            pstmt.close();
+            return;
+         }
+         Reservation res = new Reservation(rs);
+         System.out.format ("Enter 'confirm' to Confirm cancellation of reservation %d under %s %s\n",
+                 res.getCode(), res.getFirstname(), res.getLastname());
+         if (scanner.nextLine().trim().equalsIgnoreCase("confirm")) {
+            pstmt = conn.prepareStatement(
+                    "DELETE FROM lab7_reservations WHERE CODE = ?"
+            );
+            pstmt.setInt(1, code);
+            pstmt.execute();
+            System.out.println("Reservation has been deleted!");
+         }
+         pstmt.close();
+      }
+      catch (SQLException e) {
+         System.out.println("Unable to complete sql request: " + e.getMessage());
+         System.exit(1);
+      }
    }
 
    private void fr5(Connection conn) {
