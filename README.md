@@ -1,7 +1,9 @@
 # csc365jdbc
 ## Team Members
 Emily Garcia
+
 Hunter Lane
+
 David Chau
 
 ## Compilation Instructions
