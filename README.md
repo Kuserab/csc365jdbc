@@ -6,6 +6,10 @@ Hunter Lane
 
 David Chau
 
+Ryan Cook
+
+Samuel Wong
+
 ## Compilation Instructions
 To initialize your shell, run: . shell_run.sh
 
