@@ -551,6 +551,308 @@ public class InnReservations
    }
 
    private void fr6(Connection conn) {
-      System.out.println("-- Welcome to FR6 --");
-   }
+           System.out.println("-- Welcome to FR6 --");
+
+      Scanner scanner = new Scanner(System.in);
+      System.out.print("What year do you want to find the revenue of? Enter: ");
+
+      try {
+         int inYear = Integer.parseInt(scanner.nextLine().trim());
+         pstmt = conn.prepareStatement(
+                    "select RoomName, " +
+"ROUND(ifnull(SUM(January),0),0) AS January," +
+"ROUND(ifnull(SUM(February),0),0) AS February, " +
+"ROUND(ifnull(SUM(March),0),0) AS March, " +
+"ROUND(ifnull(SUM(April),0),0) AS April, " +
+"ROUND(ifnull(SUM(May),0),0) AS May, " +
+"ROUND(ifnull(SUM(June),0),0) AS June, " +
+"ROUND(ifnull(SUM(July),0),0) AS July, " +
+"ROUND(ifnull(SUM(August),0),0) AS August, " +
+"ROUND(ifnull(SUM(September),0),0) AS September, " +
+"ROUND(ifnull(SUM(October),0),0) AS October, " +
+"ROUND(ifnull(SUM(November),0),0) AS November, " +
+"ROUND(ifnull(SUM(December),0),0) AS December," +
+"ROUND(SUM(ifnull(January, 0.00) + ifnull(February,0.00)+ ifnull(March,0.00) +" +
+"ifnull(April,0.00) + ifnull(May ,0.00)+ ifnull(June,0.00) + " +
+"ifnull(July,0.00) + ifnull(August,0.00)" +
+"+ ifnull(September,0.00) + ifnull(October,0.00) + " +
+"ifnull(November,0.00) + ifnull(December,0.00)),0) AS Totals FROM" +
+"(" +
+"select RoomName," +
+"CASE" +
+"    WHEN 1 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-01-01'" +
+"        AND CheckOut <= '" + inYear + "-02-01'" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-01-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-01-01'" +
+"        AND CheckOut > '" + inYear + "-02-01'" +
+"        THEN (DATEDIFF('" + inYear + "-02-01', CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-01-01'" +
+"        AND CheckOut > '" + inYear + "-02-01'" +
+"        THEN (DATEDIFF('" + inYear + "-02-01', '" + inYear + "-01-01')*Rate)" +
+"    END" +
+"    " +
+"END AS January," +
+"CASE" +
+"    WHEN 2 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-02-01'" +
+"        AND CheckOut <= '" + inYear + "-03-01'" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-02-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-02-01'" +
+"        AND CheckOut > '" + inYear + "-03-01'" +
+"        THEN (DATEDIFF('" + inYear + "-03-01', CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-02-01'" +
+"        AND CheckOut > '" + inYear + "-03-01'" +
+"        THEN (DATEDIFF('" + inYear + "-03-01', '" + inYear + "-02-01')*Rate)" +
+"    END  " +
+"END AS February," +
+
+"CASE" +
+"    WHEN 3 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-03-01'" +
+"        AND CheckOut <= '" + inYear + "-04-01'" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-03-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-03-01'" +
+"        AND CheckOut > '" + inYear + "-04-01'" +
+"        THEN (DATEDIFF('" + inYear + "-04-01', CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-03-01'" +
+"        AND CheckOut > '" + inYear + "-04-01'" +
+"        THEN (DATEDIFF('" + inYear + "-04-01', '" + inYear + "-03-01')*Rate)" +
+"    END" +
+"    " +
+"END AS March," +
+"CASE" +
+"    WHEN 4 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-04-01'" +
+"        AND CheckOut <= '" + inYear + "-05-01'" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-04-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-04-01'" +
+"        AND CheckOut > '" + inYear + "-05-01'" +
+"        THEN (DATEDIFF('" + inYear + "-05-01', CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-04-01'" +
+"        AND CheckOut > '" + inYear + "-05-01'" +
+"        THEN (DATEDIFF('" + inYear + "-05-01', '" + inYear + "-04-01')*Rate)" +
+"    END" +
+"    " +
+"END AS April," +
+"CASE" +
+"    WHEN 5 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-05-01'" +
+"        AND CheckOut <=  '" + inYear + "-06-01'" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-05-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-05-01'" +
+"        AND CheckOut >  '" + inYear + "-06-01'" +
+"        THEN (DATEDIFF( '" + inYear + "-06-01', CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-05-01'" +
+"        AND CheckOut >  '" + inYear + "-06-01'" +
+"        THEN (DATEDIFF( '" + inYear + "-06-01', '" + inYear + "-05-01')*Rate)" +
+"    END" +
+"    " +
+"END AS May," +
+"CASE" +
+"    WHEN 6 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-06-01'" +
+"        AND CheckOut <= '" + inYear + "-07-01'" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-06-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-06-01'" +
+"        AND CheckOut > '" + inYear + "-07-01'" +
+"        THEN (DATEDIFF('" + inYear + "-06-30', CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-06-01'" +
+"        AND CheckOut > '" + inYear + "-07-01'" +
+"        THEN (DATEDIFF('" + inYear + "-07-01', '" + inYear + "-06-01')*Rate)" +
+"    END" +
+"    " +
+"END AS June," +
+"CASE" +
+"    WHEN 7 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-07-01'" +
+"        AND CheckOut <= '" + inYear + "-08-01'" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-07-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-07-01'" +
+"        AND CheckOut > '" + inYear + "-07-31'" +
+"        THEN (DATEDIFF('" + inYear + "-08-01', CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-07-01'" +
+"        AND CheckOut > '" + inYear + "-08-01'" +
+"        THEN (DATEDIFF('" + inYear + "-08-01', '" + inYear + "-07-01')*Rate)" +
+"    END" +
+"    " +
+"END AS July," +
+"CASE" +
+"    WHEN 8 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-08-01'" +
+"        AND CheckOut <= '" + inYear + "-09-01'" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-08-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-08-01'" +
+"        AND CheckOut > '" + inYear + "-09-01'" +
+"        THEN (DATEDIFF('" + inYear + "-08-31', CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-08-01'" +
+"        AND CheckOut > '" + inYear + "-09-01'" +
+"        THEN (DATEDIFF('" + inYear + "-09-01', '" + inYear + "-08-01')*Rate)" +
+"    END" +
+"    " +
+"END AS August," +
+"CASE" +
+"    WHEN 9 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-09-01'" +
+"        AND CheckOut <= '" + inYear + "-10-01'" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-09-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-09-01'" +
+"        AND CheckOut > '" + inYear + "-10-01'" +
+"        THEN (DATEDIFF('" + inYear + "-10-01', CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-09-01'" +
+"        AND CheckOut > '" + inYear + "-10-01'" +
+"        THEN (DATEDIFF('" + inYear + "-10-01', '" + inYear + "-09-01')*Rate)" +
+"    END" +
+"    " +
+"END AS September," +
+"CASE" +
+"    WHEN 10 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-10-01'" +
+"        AND CheckOut <= '" + inYear + "-11-01'" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-10-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-10-01'" +
+"        AND CheckOut > '" + inYear + "-11-01'" +
+"        THEN (DATEDIFF('" + inYear + "-11-01', CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-10-01'" +
+"        AND CheckOut > '" + inYear + "-11-01'" +
+"        THEN (DATEDIFF('" + inYear + "-11-01', '" + inYear + "-10-01')*Rate)" +
+"    END" +
+"    " +
+"END AS October," +
+"CASE" +
+"    WHEN 11 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-11-01'" +
+"        AND CheckOut <= '" + inYear + "-12-01'" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-11-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-11-01'" +
+"        AND CheckOut > '" + inYear + "-12-01'" +
+"        THEN (DATEDIFF('" + inYear + "-12-01', CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-11-01'" +
+"        AND CheckOut > '" + inYear + "-12-01'" +
+"        THEN (DATEDIFF('" + inYear + "-12-01', '" + inYear + "-11-01')*Rate)" +
+"    END" +
+"    " +
+"END AS November," +
+"CASE" +
+"    WHEN 12 BETWEEN MONTH(CheckIn) AND MONTH(CheckOut) THEN" +
+"    CASE" +
+"        WHEN MONTH(CheckIn) = MONTH(CheckOut) " +
+"        THEN (DATEDIFF(CheckOut, CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-12-01'" +
+"        AND CheckOut <= DATE_ADD('" + inYear + "-12-31', INTERVAL 1 DAY)" +
+"        THEN (DATEDIFF(CheckOut, '" + inYear + "-12-01')*Rate)" +
+"        " +
+"        WHEN CheckIn >= '" + inYear + "-12-01'" +
+"        AND CheckOut >  DATE_ADD('" + inYear + "-12-31', INTERVAL 1 DAY)" +
+"        THEN (DATEDIFF( DATE_ADD('" + inYear + "-12-31', INTERVAL 1 DAY), CheckIn)*Rate)" +
+"        " +
+"        WHEN CheckIn < '" + inYear + "-12-01'" +
+"        AND CheckOut >  DATE_ADD('" + inYear + "-12-31', INTERVAL 1 DAY)" +
+"        THEN (DATEDIFF( DATE_ADD('" + inYear + "-12-31', INTERVAL 1 DAY), '" + inYear + "-12-01')*Rate)" +
+"    END" +
+"    " +
+"END AS December" +
+"from egarc113.lab7_reservations" +
+"JOIN egarc113.lab7_rooms ON " +
+"Room = RoomCode WHERE " + inYear + " BETWEEN Year(CheckIn) AND Year(CheckOut)" +
+") t" +
+"GROUP BY RoomName"
+            );
+            pstmt.execute();
+         }
+
+          ResultSet rs = pstmt.executeQuery();
+         while (rs.next()) {
+            String roomName = rs.getString("RoomName");
+            int jan = rs.getInt("January");
+            int feb = rs.getInt("February");
+            int mar = rs.getInt("March");
+            int apr = rs.getInt("April");
+            int may = rs.getInt("May");
+            int jun = rs.getInt("June");
+            int jul = rs.getInt("July");
+            int aug = rs.getInt("August");
+            int sep = rs.getInt("September");
+            int oct = rs.getInt("October");
+            int nov = rs.getInt("November");
+            int dec = rs.getInt("December");
+            int tot = rs.getInt("Totals");
+
+            System.out.format("%s, %d, %d, %d, %d, %d, %d, %d, %d, %d , %d, %d, %d %d\n",
+                   roomName, jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, tot);
+         }
+         pstmt.close();
+      }
+      catch (SQLException e) {
+         System.out.println("Unable to complete sql request: " + e.getMessage());
+         System.exit(1);
+      }
+   
 }
