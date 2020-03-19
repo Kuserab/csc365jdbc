@@ -2,6 +2,10 @@
 ## Team Members
 Emily Garcia
 
+Hunter Lane
+
+David Chau
+
 ## Compilation Instructions
 To initialize your shell, run: . shell_run.sh
 
