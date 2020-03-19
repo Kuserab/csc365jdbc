@@ -1,0 +1,361 @@
+commit a08f3b849433c225a00c66bb5dca20be72c0bebe (HEAD -> master)
+Author: Hunter-Lane <38011818+Hunter-Lane@users.noreply.github.com>
+Date:   Wed Mar 18 17:46:50 2020 -0700
+
+    Create database.md
+
+ database.md | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 98f766ea3967c87af72a63a08d006563afea0f79
+Author: Ryan Cook <rmcook@unix3.csc.calpoly.edu>
+Date:   Wed Mar 18 17:35:01 2020 -0700
+
+    added contributors
+
+ README.md | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit acca7ac9ba8c80d417ba2e75a2afda587f7d8d08
+Merge: 54684c8 ccd5179
+Author: Ryan Cook <rmcook@unix3.csc.calpoly.edu>
+Date:   Wed Mar 18 17:32:04 2020 -0700
+
+    Merge branch 'master' of https://github.com/Kuserab/csc365jdbc
+
+commit 54684c8a05da2fb3dd21e4bd66c78dd83fc8e65d
+Author: Ryan Cook <rmcook@unix3.csc.calpoly.edu>
+Date:   Wed Mar 18 17:31:36 2020 -0700
+
+    FR1 done
+
+ jdbc/src/InnReservations.java | 82 +++++++++++++++++++++++++++++++++++++++++--
+ shell_run.sh                  |  0
+ 2 files changed, 80 insertions(+), 2 deletions(-)
+
+commit ccd5179de749829e35abc90589664345506209dc
+Author: Hunter-Lane <38011818+Hunter-Lane@users.noreply.github.com>
+Date:   Wed Mar 18 17:02:20 2020 -0700
+
+    Formatted names
+
+ README.md | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 751328f00ff2c57ef1d2e87aedec43f07829cc05
+Author: Hunter-Lane <38011818+Hunter-Lane@users.noreply.github.com>
+Date:   Wed Mar 18 17:01:35 2020 -0700
+
+    Added name to readme
+
+ README.md | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit c2c49fb450b222dbbca05185199f51b07098d16d
+Author: emily garcia <whirlygig@users.noreply.github.com>
+Date:   Wed Mar 18 13:49:23 2020 -0700
+
+    Update README.md
+
+ README.md | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 7e0c663aaa8b5e054537548047041e33650d3e5e
+Author: Hunter Lane <hdlane@calpoly.edu>
+Date:   Tue Mar 17 18:18:10 2020 -0700
+
+    Completed FR4
+
+ jdbc/src/InnReservations.java | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+
+commit 94fc35e816e337dbe6cf04bbe8226ce322b00026
+Author: Hunter-Lane <38011818+Hunter-Lane@users.noreply.github.com>
+Date:   Tue Mar 17 14:10:13 2020 -0700
+
+    Deleted extra sql jar file
+
+ .../CPE365Lab7/mysql-connector-java-8.0.16.jar        | Bin 2293144 -> 0 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 06c47d9469215ed9448fb5d63d4999a7ecef8770
+Merge: c109931 502417b
+Author: Hunter Lane <hdlane@calpoly.edu>
+Date:   Tue Mar 17 14:01:37 2020 -0700
+
+    Merge branch 'master' of https://github.com/Kuserab/csc365jdbc
+
+commit c109931d47bc41b6dbbf6d5d4224ca43e3bab3ab
+Author: Hunter Lane <hdlane@calpoly.edu>
+Date:   Tue Mar 17 14:01:24 2020 -0700
+
+    Completed FR3
+
+ .../CPE365Lab7/mysql-connector-java-8.0.16.jar     | Bin 0 -> 2293144 bytes
+ jdbc/src/InnReservations.java                      |  75 +++++++++++++
+ jdbc/src/Reservation.java                          | 119 +++++++++++++++++++++
+ 3 files changed, 194 insertions(+)
+
+commit 502417b21068f5771eb675dc3e5d387cd2dfc4b0
+Merge: 8500ce1 98e3e15
+Author: David Chau <dchau03@unix5.csc.calpoly.edu>
+Date:   Mon Mar 16 21:28:31 2020 -0700
+
+    Merge branch 'master' of https://github.com/Kuserab/csc365jdbc
+
+commit 8500ce1c9c0ce9a1d909261a1b1cdb7f577e2906
+Author: David Chau <dchau03@unix5.csc.calpoly.edu>
+Date:   Mon Mar 16 21:27:35 2020 -0700
+
+    basic fr2 done, needs refining according to spec
+
+ jdbc/src/AltRooms.java        | 56 ++++++++++++++++++++++++++++
+ jdbc/src/InnReservations.java | 85 ++++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 132 insertions(+), 9 deletions(-)
+
+commit 98e3e15cf6fa0886139b4dd7725d22cde911131e
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Mon Mar 16 15:32:23 2020 -0700
+
+    oops
+
+ test.java | 17 -----------------
+ 1 file changed, 17 deletions(-)
+
+commit 1de836f6f5c505d4e432632fab0662f75c14fa77
+Merge: 2d56991 4046a98
+Author: David Chau <dchau03@unix5.csc.calpoly.edu>
+Date:   Mon Mar 16 15:31:16 2020 -0700
+
+    Merge branch 'master' of https://github.com/Kuserab/csc365jdbc
+
+commit 2d56991b4e1188f904e872d9d2f11fafb29743c0
+Author: David Chau <dchau03@unix5.csc.calpoly.edu>
+Date:   Mon Mar 16 15:28:54 2020 -0700
+
+    added confirmation screen, still need to create 5 possibilites, create enry in table
+
+ jdbc/src/InnReservations.java | 49 ++++++++++++++++++++++++++++++++++++-------
+ test.java                     | 17 +++++++++++++++
+ 2 files changed, 59 insertions(+), 7 deletions(-)
+
+commit 796a273005053fd8036dda52f20ff816594ae7a5
+Author: Hunter Lane <hdlane@calpoly.edu>
+Date:   Mon Mar 16 14:37:27 2020 -0700
+
+    Deleted .class files
+
+ jdbc/src/InnReservations.class | Bin 7652 -> 0 bytes
+ jdbc/src/Room.class            | Bin 1445 -> 0 bytes
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 1a779fc38fa3cfaf991d96ef4a1441d9a67f625c
+Merge: 4819feb 4046a98
+Author: Hunter Lane <hdlane@calpoly.edu>
+Date:   Mon Mar 16 14:36:32 2020 -0700
+
+    Merge branch 'master' of https://github.com/Kuserab/csc365jdbc
+
+commit 4819feb23a6460b96a1a6c308a99414188b5310a
+Author: Hunter Lane <hdlane@calpoly.edu>
+Date:   Mon Mar 16 14:36:26 2020 -0700
+
+    Added .gitignore
+
+ .gitignore | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+commit 4046a988b80469a56738373f813468b0fe80b0da
+Author: Hunter-Lane <38011818+Hunter-Lane@users.noreply.github.com>
+Date:   Mon Mar 16 14:30:27 2020 -0700
+
+    Added wildcard in compile
+
+ shell_run.sh | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit a734fb6ea9e1fe6909a173dd3ec07b52f5f79248
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Mon Mar 16 12:01:15 2020 -0700
+
+    updated to also compile Room.java
+
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e136d8e5d0f60c2084a325472265300995892f44
+Merge: 9acd1fb b885bf7
+Author: David Chau <dchau03@unix5.csc.calpoly.edu>
+Date:   Mon Mar 16 04:02:15 2020 -0700
+
+    Merge branch 'master' of https://github.com/Kuserab/csc365jdbc
+
+commit 9acd1fbeb870e417e5eb7cfea63bd7e15d5f8f2e
+Author: David Chau <dchau03@unix5.csc.calpoly.edu>
+Date:   Mon Mar 16 03:56:23 2020 -0700
+
+    added Room class, half done FR2
+
+ jdbc/src/InnReservations.class | Bin 0 -> 7652 bytes
+ jdbc/src/InnReservations.java  | 117 ++++++++++++++++++++++++++++++++++++++++-
+ jdbc/src/Room.class            | Bin 0 -> 1445 bytes
+ jdbc/src/Room.java             |  74 ++++++++++++++++++++++++++
+ shell_run.sh                   |   3 +-
+ 5 files changed, 191 insertions(+), 3 deletions(-)
+
+commit b885bf744a3c2ee4799900b40c05693f934dfc9e
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Mon Mar 16 03:54:50 2020 -0700
+
+    Delete mysql-connector-java-8.0.16.jar
+
+ mysql-connector-java-8.0.16.jar | Bin 2293144 -> 0 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit db63be9a03f749816534c0ef0d3b58f825d8f8f8
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Sat Mar 14 17:36:52 2020 -0700
+
+    jank fix for running jar in java classpath
+
+ shell_run.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 378715c8445918bbd9709436ea41f7ea734fb22a
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Sat Mar 14 17:36:04 2020 -0700
+
+    jar file
+
+ jdbc/src/mysql-connector-java-8.0.16.jar | Bin 0 -> 2293144 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 2f7039c843bba8d0befc7c20af39a80d7c0a4a1a
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Sat Mar 14 17:05:23 2020 -0700
+
+    fixed java classpath
+
+ shell_run.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d83de6d7c81262b8ad70de3e7e1fc22628984f97
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Sat Mar 14 16:53:28 2020 -0700
+
+    asks for user input
+
+    also compiles java source file and runs
+
+ shell_init.sh => shell_run.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 5eae2259fb6d08ffd86cee833f675577a84f2df2
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Sat Mar 14 16:50:08 2020 -0700
+
+    Add files via upload
+
+ mysql-connector-java-8.0.16.jar | Bin 0 -> 2293144 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 2444f8cdd7de0af311dcffba8ede6ffa1fd9d750
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Sat Mar 14 16:49:22 2020 -0700
+
+    Update README.md
+
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 0ad8770482d47dcbad90bb2610a60b5a4782bfeb
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Sat Mar 14 16:48:10 2020 -0700
+
+    Update README.md
+
+ README.md | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+commit 4c0eba4a909162b7d1707c67607b872feb4cdc93
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Sat Mar 14 16:47:17 2020 -0700
+
+    Asks for user input now
+
+    Now we don't need to go into and edit
+
+ shell_init.sh | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+commit bd25e65e12f3ec6589362901fcc72f941782006c
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Sat Mar 14 16:41:05 2020 -0700
+
+    Create shell_init.sh
+
+ shell_init.sh | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+commit aa38865a192594751646d705b664016183a56d51
+Author: dchauwastaken <43480022+dchauwastaken@users.noreply.github.com>
+Date:   Sat Mar 14 16:40:13 2020 -0700
+
+    Delete shell_init
+
+ shell_init | 8 --------
+ 1 file changed, 8 deletions(-)
+
+commit cb73898f0e705425f116c3e7174004e998e891dc
+Author: Hunter Lane <hdlane@calpoly.edu>
+Date:   Fri Mar 13 10:55:17 2020 -0700
+
+    Added commandline prompts
+
+ jdbc/src/InnReservations.java | 74 +++++++++++++++++++++++++------------------
+ 1 file changed, 43 insertions(+), 31 deletions(-)
+
+commit 0a9ba439e41f88d04e81bcb84b65479af334eb8d
+Author: emily garcia <whirlygig@users.noreply.github.com>
+Date:   Thu Mar 12 22:17:48 2020 -0700
+
+    fr5 done? hopefully?
+
+ jdbc/src/InnReservations.java | 80 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 79 insertions(+), 1 deletion(-)
+
+commit fce32bca6731abfe054b99260c313256283a2373
+Author: dchau03 <43480022+dchau03@users.noreply.github.com>
+Date:   Wed Mar 11 11:27:50 2020 -0700
+
+    bash script for exporting variables, compiles
+
+ shell_init | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+commit 486a3ec922adeef1197fbabf85ebef96e68987f3
+Author: Hunter Lane <hdlane@calpoly.edu>
+Date:   Wed Mar 11 11:06:57 2020 -0700
+
+    Fixed sample query
+
+ .../src/{InnDatabase.java => InnReservations.java} | 36 +++++++++++++++-------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
+
+commit 14a0dd1ecb88111ec7f2e99ba7abf6fe4f99aaa3
+Author: Hunter Lane <hdlane@calpoly.edu>
+Date:   Tue Mar 10 20:51:29 2020 -0700
+
+    Connect to database
+
+ jdbc/src/InnDatabase.java | 51 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
+
+commit 7e9f396fda0a896dbfe91b2133ef68cbfdb152a8
+Author: Ryan Cook <rmcook@calpoly.edu>
+Date:   Mon Mar 9 10:37:55 2020 -0700
+
+    Initial commit
+
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
