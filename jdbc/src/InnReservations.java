@@ -29,7 +29,7 @@ public class InnReservations
       }
    }
 
-   private void runSqlQueries(Connection conn)
+   private void runSqlQueries(Connection conn) throws SQLException
    {
       String input = "";
       Scanner scanner = new Scanner(System.in);
@@ -62,8 +62,86 @@ public class InnReservations
       System.out.println("Goodbye");
    }
 
-   private void fr1(Connection conn) {
+   private void fr1(Connection conn) throws SQLException 
+   {
       System.out.println("== Welcome to FR1 ==");
+      
+      PreparedStatement pstmt = conn.prepareStatement
+      (
+         "with daysInRange as (\n"
+         + "select room, CheckIn, CheckOut\n"
+         + "from egarc113.lab7_reservations resv\n"
+         + "where CheckIn between DATE_SUB(CURDATE(), INTERVAL 180 DAY) and CURDATE()\n"
+         + "), numDays as (\n"
+         + "select room, DATEDIFF(CheckOut, CheckIn) daysOcc\n"
+         + "from daysInRange\n"
+         + "), daysOccByRoom as (\n"
+         + "select room, SUM(daysOcc) daysOcc\n"
+         + "from numDays\n"
+         + "group by room\n"
+         + "), nextDay as (\n"
+         + "select room, DATE_ADD(MAX(CheckOut), INTERVAL 1 DAY) available\n"
+         + "from egarc113.lab7_reservations resv\n"
+         + "group by room\n"
+         + "), stayBeforeToday as (\n"
+         + "select room, CheckOut, DATEDIFF(CheckOut, CheckIn) daysOcc\n"
+         + "from daysInRange\n"
+         + "where CheckOut < CURDATE()\n"
+         + "), mostRecStay as (\n"
+         + "select room, MAX(CheckOut) mostRecCheckOut\n"
+         + "from stayBeforeToday\n"
+         + "group by room\n"
+         + "), mostRecVisit as (\n"
+         + "select room, CheckOut, daysOcc\n"
+         + "from stayBeforeToday\n"
+         + "where (room, CheckOut) in (select * from mostRecStay)\n"
+         + ")\n"
+         + "select RoomCode, RoomName, Beds, bedType, maxOcc, basePrice, decor, \n"
+         + "ROUND((occ.daysOcc / 180), 2) popularity, available,\n"
+         + "mRV.daysOcc numDaysMostRecStay, CheckOut mostRecCheckOut\n"
+         + "from egarc113.lab7_rooms r\n"
+         + "join daysOccByRoom occ on RoomCode = occ.room\n"
+         + "join nextDay nD on RoomCode = nD.room\n"
+         + "join mostRecVisit mRV on RoomCode = mRV.room\n"
+         + "order by popularity desc\n"
+      );
+
+      ResultSet rs = pstmt.executeQuery();
+      String roomCode;
+      String roomName;
+      int beds;
+      String bedType;
+      int maxOcc;
+      int basePrice;
+      String decor;
+      float popularity;
+      Date available;
+      int numDaysMostRecStay;
+      Date mostRecCheckOut;
+
+      System.out.println("RoomCode  RoomName                  Beds  bedType  maxOcc  basePrice  decor        popularity  available    numDaysMostRecStay  mostRecCheckOut");
+      while (rs.next())
+      {
+         try {
+            roomCode = rs.getString("RoomCode");
+            roomName = rs.getString("RoomName");
+            beds = rs.getInt("Beds");
+            bedType = rs.getString("bedType");
+            maxOcc = rs.getInt("maxOcc");
+            basePrice = rs.getInt("basePrice");
+            decor = rs.getString("decor");
+            popularity = rs.getFloat("popularity");
+            available = rs.getDate("available");
+            numDaysMostRecStay = rs.getInt("numDaysMostRecStay");
+            mostRecCheckOut = rs.getDate("mostRecCheckOut");
+            System.out.format("%s       %-25s   %d   %-6s   %-5d   %-8d   %-12s   %-7.2f   %s   %-17d   %s\n",
+                              roomCode, roomName, beds, bedType, maxOcc, basePrice, decor, popularity, available.toString(), numDaysMostRecStay, mostRecCheckOut.toString());
+         } catch (SQLException e) {
+            System.out.println("Unable to display popularity table");
+            throw e;
+         }
+      }
+      
    }
 
    private String checkStringLen(Scanner scanner, String printMsg)
